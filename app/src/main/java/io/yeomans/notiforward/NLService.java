@@ -51,7 +51,7 @@ public class NLService extends NotificationListenerService {
     public void onNotificationPosted(StatusBarNotification sbn) {
 
         Log.i(TAG, "**********  onNotificationPosted");
-        Log.i(TAG, "ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
+        Log.i(TAG, "ID :" + sbn.getId() + "\t" + "Key :" + sbn.getKey() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
 //        Intent i = new Intent("io.yeomans.notiforward.NOTIFICATION_ACTION");
 //        i.putExtra("notification_event", "onNotificationPosted :" + sbn.getPackageName() + "\n");
 //        sendBroadcast(i);
@@ -85,18 +85,20 @@ public class NLService extends NotificationListenerService {
             } else {
                 notif.put("text", null);
             }
-            Firebase pushRef = ref.child("notifications").push();
-            pushRef.setValue(notif);
+            //Firebase pushRef = ref.child("notifications").push();
+            //pushRef.setValue(notif);
+            ref.child(""+sbn.getPostTime()).setValue(notif);
         }
     }
 
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
         Log.i(TAG, "********** onNOtificationRemoved");
-        Log.i(TAG, "ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
+        Log.i(TAG, "ID :" + sbn.getId() + "\t" + "Key :" + sbn.getKey() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
 //        Intent i = new Intent("io.yeomans.notiforward.NOTIFICATION_ACTION");
 //        i.putExtra("notification_event", "onNotificationRemoved :" + sbn.getPackageName() + "\n");
 //        sendBroadcast(i);
+        ref.child(""+sbn.getPostTime()).removeValue();
     }
 
 //    public Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
