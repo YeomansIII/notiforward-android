@@ -72,7 +72,7 @@ public class NLService extends NotificationListenerService {
 //        }
         if (!sbn.getPackageName().equals("android")) {
             Map<String, Object> notif = new HashMap<>();
-            notif.put("package", sbn.getPackageName());
+            notif.put("package", sbn.getPackageName().replace('.', '_'));
 //        if (ba1 != null) {
 //            notif.put("icon", ba1);
 //        }
@@ -87,7 +87,7 @@ public class NLService extends NotificationListenerService {
             }
             //Firebase pushRef = ref.child("notifications").push();
             //pushRef.setValue(notif);
-            ref.child(""+sbn.getPostTime()).setValue(notif);
+            ref.child(ref.getAuth().getUid() + "/notifications/" + sbn.getPostTime()).setValue(notif);
         }
     }
 
@@ -98,7 +98,7 @@ public class NLService extends NotificationListenerService {
 //        Intent i = new Intent("io.yeomans.notiforward.NOTIFICATION_ACTION");
 //        i.putExtra("notification_event", "onNotificationRemoved :" + sbn.getPackageName() + "\n");
 //        sendBroadcast(i);
-        ref.child(""+sbn.getPostTime()).removeValue();
+        ref.child(ref.getAuth().getUid() + "/notifications/" + sbn.getPostTime()).removeValue();
     }
 
 //    public Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
