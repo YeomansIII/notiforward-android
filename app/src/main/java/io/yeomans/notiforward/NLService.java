@@ -70,7 +70,8 @@ public class NLService extends NotificationListenerService {
 //        } catch (PackageManager.NameNotFoundException e) {
 //            e.printStackTrace();
 //        }
-        if (!sbn.getPackageName().equals("android")) {
+        String packageName = sbn.getPackageName();
+        if (!packageName.equals("android") && !packageName.contains("incallui")) {
             Map<String, Object> notif = new HashMap<>();
             notif.put("package", sbn.getPackageName().replace('.', '_'));
 //        if (ba1 != null) {
@@ -79,12 +80,7 @@ public class NLService extends NotificationListenerService {
             notif.put("ticker", sbn.getNotification().tickerText);
             Bundle extras = sbn.getNotification().extras;
             notif.put("title", extras.getString("android.title"));
-            CharSequence text = extras.getCharSequence("android.text");
-            if (text != null) {
-                notif.put("text", text.toString());
-            } else {
-                notif.put("text", null);
-            }
+            notif.put("text", extras.getString("android.text"));
             //Firebase pushRef = ref.child("notifications").push();
             //pushRef.setValue(notif);
             ref.child(ref.getAuth().getUid() + "/notifications/" + sbn.getPostTime()).setValue(notif);

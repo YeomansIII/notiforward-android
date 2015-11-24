@@ -8,13 +8,29 @@ android {
         applicationId "io.yeomans.notiforward"
         minSdkVersion 20
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "0.2"
+        archivesBaseName = "Notiforward-$versionName-$versionCode"
+    }
+    signingConfigs {
+        release {
+            storeFile file("${System.env.NOTIF_KEYSTORE_PATH}")
+            storePassword "${System.env.NOTIF_KEYSTORE_PW}"
+            keyAlias "notiforward"
+            keyPassword "${System.env.NOTIF_ALIAS_PW}"
+        }
     }
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable true
+            //signingConfig signingConfigs.release
+        }
+        release {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     packagingOptions {
