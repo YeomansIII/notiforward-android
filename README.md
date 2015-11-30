@@ -20,3 +20,7 @@
 
 ## Set Up Firebase Database
 https://github.com/YeomansIII/notiforward-android/wiki/Notiforward-Setup-(Getting-Started)
+
+## Builds on Jenkins
+  - Development Builds: https://jenkins.yeomans.io/job/notiforward-android-dev/
+  - Release Builds: https://jenkins.yeomans.io/job/notiforward-android-master/
