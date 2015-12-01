@@ -1,4 +1,4 @@
-# Notiforward Android App
+# Notiforward Android App [![Jenkins](https://img.shields.io/jenkins/s/https/jenkins.yeomans.io/notiforward-android-master.svg?style=flat-square)](https://jenkins.yeomans.io/job/notiforward-android-master/)
 
 ## Getting Started
 1. Download Android Studio for your platform: http://developer.android.com/sdk/index.html
