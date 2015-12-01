@@ -74,7 +74,7 @@ public class NLService extends NotificationListenerService {
         Bundle extras = sbn.getNotification().extras;
         String title = extras.getString("android.title");
         String text = extras.getString("android.text");
-        if (!packageName.equals("android") && !packageName.contains("incallui") && !(packageName.contains("com.android.mms") && text == null)) {
+        if (!packageName.equals("android") && !packageName.contains("incallui") && !(packageName.contains("com.android.mms") && text == null) && !packageName.equals("com.android.providers.downloads") && !packageName.equals("com.google.android.gms")) {
             Map<String, Object> notif = new HashMap<>();
             notif.put("package", sbn.getPackageName().replace('.', '_'));
 //        if (ba1 != null) {
@@ -91,7 +91,7 @@ public class NLService extends NotificationListenerService {
 
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
-        Log.i(TAG, "********** onNOtificationRemoved");
+        Log.i(TAG, "********** onNotificationRemoved");
         Log.i(TAG, "ID :" + sbn.getId() + "\t" + "Key :" + sbn.getKey() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
 //        Intent i = new Intent("io.yeomans.notiforward.NOTIFICATION_ACTION");
 //        i.putExtra("notification_event", "onNotificationRemoved :" + sbn.getPackageName() + "\n");
