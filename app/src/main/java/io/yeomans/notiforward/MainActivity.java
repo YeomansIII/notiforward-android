@@ -34,10 +34,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Firebase.setAndroidContext(getApplicationContext());
 
         setContentView(R.layout.activity_main);
-//        nReceiver = new NotificationReceiver();
-//        IntentFilter filter = new IntentFilter();
-//        filter.addAction("io.yeomans.notiforward.NOTIFICATION_ACTION");
-//        registerReceiver(nReceiver, filter);
 
         pref = getSharedPreferences(MAIN_PREF, 0);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
@@ -48,35 +44,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         firebaseUrlInput = (TextInputLayout) findViewById(R.id.firebaseUrlEditWrapper);
         emailInput = (TextInputLayout) findViewById(R.id.emailEditWrapper);
         passwordInput = (TextInputLayout) findViewById(R.id.passwordEditWrapper);
-
-        firebaseUrlInput.getEditText().setText(pref.getString(PREF_FIREBASE_DB, ""));
+        String fbDb = pref.getString(PREF_FIREBASE_DB, "");
+        firebaseUrlInput.getEditText().setText(fbDb);
         emailInput.getEditText().setText(pref.getString(PREF_FIREBASE_EMAIL, ""));
+        ////Display the notification access settings hint if the user has come back to the app after already being authenticated
+        if (!fbDb.equals("")) {
+            findViewById(R.id.notifAccessHint).setVisibility(View.VISIBLE);
+        }
     }
-
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        //unregisterReceiver(nReceiver);
-//    }
-
 
     public void onClick(View v) {
         if (v.getId() == R.id.setAndAuthButton) {
+            ////Save firebase URL, DB name, and email into shared preferences
             SharedPreferences.Editor edit = pref.edit();
             String fDb = firebaseUrlInput.getEditText().getText().toString();
             edit.putString(PREF_FIREBASE_DB, fDb);
+            ////Take the database name that the user entered and convert it to the full firebase URL
             String fUrl = "https://" + fDb + ".firebaseio.com";
             edit.putString(PREF_FIREBASE_URL, fUrl);
             Firebase ref = new Firebase(fUrl);
             String email = emailInput.getEditText().getText().toString();
             edit.putString(PREF_FIREBASE_EMAIL, email).apply();
             String pass = passwordInput.getEditText().getText().toString();
+            ////Auth with firebase using the entered values (url, email, password)
             ref.authWithPassword(email, pass, new Firebase.AuthResultHandler() {
                 @Override
                 public void onAuthenticated(AuthData authData) {
                     errorText.setTextColor(Color.BLACK);
                     errorText.setText("Successful Authentication");
+                    findViewById(R.id.notifAccessHint).setVisibility(View.VISIBLE);
                     passwordInput.getEditText().setText("");
+                    ////Restart the NotificationListener service to use new Firebase settings after successful auth
                     Intent intent = new Intent(MainActivity.this, NLService.class);
                     stopService(intent);
                     startService(intent);
@@ -90,15 +88,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             });
         }
     }
-
-//    class NotificationReceiver extends BroadcastReceiver {
-//
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            String temp = intent.getStringExtra("notification_event") + "\n" + txtView.getText();
-//            txtView.setText(temp);
-//        }
-//    }
-
-
 }
