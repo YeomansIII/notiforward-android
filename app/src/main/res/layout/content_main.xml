@@ -71,4 +71,14 @@
         android:textSize="20sp"
         android:textIsSelectable="false"
         android:textColor="@android:color/black" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Make sure you allow Notiforward to receive notifications under &apos;Notification Access&apos; in your settings"
+        android:id="@+id/notifAccessHint"
+        android:textSize="25sp"
+        android:layout_below="@+id/errorText"
+        android:layout_alignParentEnd="true"
+        android:visibility="invisible" />
 </RelativeLayout>
